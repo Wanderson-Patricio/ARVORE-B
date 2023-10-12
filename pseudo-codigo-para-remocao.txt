@@ -23,7 +23,7 @@ algoritmo deletar(T : Tree, key : int)
         retorne
     fim se
 
-    keyDeleted = delete(T.root, key)
+    keyDeleted <- delete(T.root, key)
 
     se T.root.n = 0 entao
         se T.root.isLeaf entao
