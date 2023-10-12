@@ -44,6 +44,7 @@ public class BTree{
 	
 	public void insert(int x){
 		Node r = this.root;
+		if(r.search() != null) return;
 		
 		if(r.isFull()){
 			Node s = this.splitRoot();
