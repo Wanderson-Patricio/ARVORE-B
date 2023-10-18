@@ -29,7 +29,7 @@ algoritmo deletar(T : Tree, key : int)
         se T.root.isLeaf entao
             newRoot <- λ
         senao
-            newRoot <- T.root.childrens[0]
+            newRoot <- T.root.childrens[1]
         fim se
 
         T.root <- newRoot
@@ -62,7 +62,7 @@ algoritmo delete(no : node, key : int)
 
             keyToReplace <- findPredecessor(no, index)
             no.keys[index] <- keyToReplace
-            retorne delete(no.childrens[i], keyToReplace)
+            retorne delete(no.childrens[index], keyToReplace)
         
         fim se
 
@@ -116,7 +116,7 @@ algoritmo borrowFromLeftSibling(parent : node, childIndex : int)
     child <- parent.childrens[childIndex]
     sibling <- parent.childrens[childIndex - 1]
 
-    insereOrdenado(child, parent.keys[childIndex])
+    insereOrdenado(child, parent.keys[childIndex - 1])
     parent.keys[childIndex - 1] <- sibling.keys[sibling.n]
     sibling.n <- sibling.n -1
 fim algoritmo
@@ -127,8 +127,8 @@ algoritmo borrowFromRightSibling(parent : node, childIndex : int)
     child <- parent.childrens[childIndex]
     sibling <- parent.childrens[childIndex + 1]
 
-    insereOrdenado(child, parent.keys[childIndex + 1])
-    parent.keys[childIndex + 1] = sibling.keys[1]
+    insereOrdenado(child, parent.keys[childIndex])
+    parent.keys[childIndex] = sibling.keys[1]
 
     para i de 1 até sibling.n - 1 faça
         sibling.keys[i] <- sibling.keys[i+1]
@@ -149,14 +149,12 @@ algoritmo mergeWithSibling(parent : node, childIndex : int)
         child.keys[child.n + 1] <- parent.keys[1]
         child.n <- child.n + 1
 
-        para i de 1 até sibling.n - 1 faça
+        para i de 1 até sibling.n faça
             child.keys[child.n + 1] <- sibling.keys[i]
             child.n <- child.n + 1
         fim para
 
-        parent.keys[1] <- sibling.keys[sibling.n]
-
-        para i de 2 até parent.n faça
+        para i de 1 até parent.n - 1 faça
             parent.keys[i] <- parent.keys[i+1]
             parent.childrens[i] <- parent.childrens[i+1]
         fim para
@@ -174,8 +172,6 @@ algoritmo mergeWithSibling(parent : node, childIndex : int)
             sibling.keys[sibling.n + 1] <- child.keys[i]
             sibling.n <- sibling.n + 1
         fim para
-
-        parent.keys[childIndex - 1] <- child.keys[child.n]
 
         para i de childIndex - 1 até parent.n - 1 faça
             parent.keys[i] <- parent.keys[i+1]
